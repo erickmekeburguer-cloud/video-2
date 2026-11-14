@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meu Site de Vídeos</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: #0d0d0d; color: #fff; font-family: system-ui, sans-serif; padding: 20px; }
+    header { max-width: 1200px; margin: 0 auto 24px; border-bottom: 1px solid #222; padding-bottom: 16px; }
+    header h1 { font-size: 22px; }
+    header p { color: #888; font-size: 13px; margin-top: 4px; }
+    .player { max-width: 1000px; margin: 0 auto 32px; background: #000; border-radius: 10px; overflow: hidden; }
+    .player video { width: 100%; display: block; max-height: 70vh; background: #000; }
+    .player .titulo { padding: 12px 16px; font-size: 15px; color: #ccc; background: #151515; }
+    .grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; }
+    .card { background: #1a1a1a; border-radius: 8px; overflow: hidden; cursor: pointer; transition: .15s; border: 2px solid transparent; }
+    .card:hover { transform: translateY(-3px); }
+    .card.ativo { border-color: #ff4444; }
+    .card video { width: 100%; aspect-ratio: 16/9; object-fit: cover; pointer-events: none; }
+    .card .nome { padding: 10px 12px; font-size: 13px; color: #ddd; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>🎬 Meu Site de Vídeos</h1>
+    <p>Clique em um vídeo abaixo para assistir</p>
+  </header>
+
+  <div class="player" id="player" style="display:none;">
+    <video id="mainVideo" controls playsinline></video>
+    <div class="titulo" id="tituloAtual"></div>
+  </div>
+
+  <div class="grid" id="lista"></div>
+
+  <script>
+    // CONFIGURAÇÕES DO SEU GITHUB (Baseado na sua imagem)
+    const USUARIO_GITHUB = "erickmekeburguer-cloud";
+    const REPOSITORIO = "videos";
+    const BRANCH = "main"; // Na sua imagem mostra "main"
+    
+    // O NOME EXATO DO ARQUIVO NA SUA IMAGEM
+    const VIDEOS = [
+      { arquivo: "Pippit_1104_SERVIX_Futuro.mp4", titulo: "Pippit 1104 SERVIX Futuro" }
+      // Para adicionar mais vídeos, coloque uma vírgula no final da linha acima e adicione outra linha assim:
+      // { arquivo: "outro_video.mp4", titulo: "Nome do outro vídeo" }
+    ];
+
+    const playerBox = document.getElementById('player');
+    const mainVideo = document.getElementById('mainVideo');
+    const tituloAtual = document.getElementById('tituloAtual');
+    const lista = document.getElementById('lista');
+
+    // Função que cria o link direto para o arquivo no GitHub
+    function pegarLink(arquivo) {
+      return `https://raw.githubusercontent.com/${USUARIO_GITHUB}/${REPOSITORIO}/${BRANCH}/${arquivo}`;
+    }
+
+    function abrirVideo(index) {
+      const v = VIDEOS[index];
+      mainVideo.src = pegarLink(v.arquivo);
+      tituloAtual.textContent = v.titulo;
+      playerBox.style.display = 'block';
+      mainVideo.play().catch(() => {});
+      document.querySelectorAll('.card').forEach((c, i) => c.classList.toggle('ativo', i === index));
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function criarCard(v, index) {
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.innerHTML = `
+        <video src="${pegarLink(v.arquivo)}" preload="metadata" muted></video>
+        <div class="nome">${v.titulo}</div>
+      `;
+      card.onclick = () => abrirVideo(index);
+      return card;
+    }
+
+    if (VIDEOS.length > 0) {
+      VIDEOS.forEach((v, i) => lista.appendChild(criarCard(v, i)));
+    }
+  </script>
+</body>
+</html>
