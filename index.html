@@ -36,16 +36,13 @@
   <div class="grid" id="lista"></div>
 
   <script>
-    // CONFIGURAÇÕES DO SEU GITHUB (Baseado na sua imagem)
+    // CONFIGURAÇÕES DO SEU GITHUB ATUALIZADAS
     const USUARIO_GITHUB = "erickmekeburguer-cloud";
-    const REPOSITORIO = "videos";
-    const BRANCH = "main"; // Na sua imagem mostra "main"
+    const REPOSITORIO = "video-2"; // <-- MUDOU AQUI
+    const BRANCH = "main";
     
-    // O NOME EXATO DO ARQUIVO NA SUA IMAGEM
     const VIDEOS = [
       { arquivo: "Pippit_1104_SERVIX_Futuro.mp4", titulo: "Pippit 1104 SERVIX Futuro" }
-      // Para adicionar mais vídeos, coloque uma vírgula no final da linha acima e adicione outra linha assim:
-      // { arquivo: "outro_video.mp4", titulo: "Nome do outro vídeo" }
     ];
 
     const playerBox = document.getElementById('player');
@@ -53,8 +50,8 @@
     const tituloAtual = document.getElementById('tituloAtual');
     const lista = document.getElementById('lista');
 
-    // Função que cria o link direto para o arquivo no GitHub
     function pegarLink(arquivo) {
+      // Cria o link direto do arquivo no GitHub
       return `https://raw.githubusercontent.com/${USUARIO_GITHUB}/${REPOSITORIO}/${BRANCH}/${arquivo}`;
     }
 
